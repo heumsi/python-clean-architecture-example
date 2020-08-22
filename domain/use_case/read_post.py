@@ -1,6 +1,8 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
+from domain.repository.post_repository import PostRepository
+
 
 @dataclass
 class ReadPostInputDto:
@@ -18,13 +20,13 @@ class ReadPostOutputDto:
 
 class ReadPostOutputBoundary(metaclass=ABCMeta):
     @abstractmethod
-    def present(self, output_dto: ReadPostInputDto) -> None:
+    def execute(self, output_dto: ReadPostOutputDto) -> None:
         pass
 
 
 class ReadPostInputBoundary(metaclass=ABCMeta):
     @abstractmethod
-    def execute(self, input_dto: ReadPostOutputDto, presenter: ReadPostOutputBoundary) -> None:
+    def execute(self, input_dto: ReadPostInputDto, presenter: ReadPostOutputBoundary) -> None:
         pass
 
 
@@ -37,11 +39,11 @@ class ReadPost(ReadPostInputBoundary):
         3. OutputDto 를 출력 레이어로 전달한다.
     """
 
-    def __init__(self, data_access: DataAccess):
-        self._data_access = data_access
+    def __init__(self, repository: PostRepository):
+        self._repository = repository
 
     def execute(self, input_dto: ReadPostInputDto, output_boundary: ReadPostOutputBoundary) -> None:
-        post = self._data_access.get_post_by_id(id=input_dto.post_id)
+        post = self._repository.get_post_by_id(id=input_dto.post_id)
         output_dto = ReadPostOutputDto(
             post_id=post.id,
             author=post.author,
