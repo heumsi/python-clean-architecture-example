@@ -1,0 +1,2 @@
+class NotExistedDataError(Exception):
+    pass
