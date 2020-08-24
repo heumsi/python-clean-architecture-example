@@ -1,15 +1,13 @@
-import datetime
-import json
-from dataclasses import asdict, is_dataclass
-from typing import Union
+from typing import List, Union
 
 from flask import Flask, abort, jsonify, request
 
+from adapter.post_adapter import PostAdapter
 from data.in_memory_post_repository import InMemoryPostRepository
-from domain.use_case.read_post import (ReadPost, ReadPostInputDto,
-                                       ReadPostOutputDto)
-from domain.use_case.read_posts import (ReadPosts, ReadPostsInputDto,
-                                        ReadPostsOutputDto)
+from domain.dto.read_post import ReadPostOutputDto
+from domain.dto.write_post import WritePostOutputDto
+from domain.use_case.read_post import ReadPost
+from domain.use_case.read_posts import ReadPosts
 from domain.use_case.write_post import WritePost, WritePostInputDto
 
 app = Flask(__name__)
@@ -18,64 +16,46 @@ repository = InMemoryPostRepository()
 
 @app.route("/read_post/<int:post_id>/", methods=["GET"])
 def read_post(post_id: int):
-    # convert json to dto
-    input_dto = ReadPostInputDto(post_id=post_id)
-
     # execute use_case
     use_case = ReadPost(repository=repository)
-    output_dto: Union[ReadPostOutputDto, None] = use_case.execute(input_dto=input_dto)
+    output_dto: Union[ReadPostOutputDto, None] = use_case.execute(post_id=post_id)
     if output_dto is None:
-        response_body = abort(404, description="Resource not found")
+        return abort(404, f"post_id = {post_id}")
 
-    # convert dto to json
-    response_data = json.dumps(asdict(output_dto), default=_default_json_encoder)
-
-    return jsonify(response_data)
+    # convert output_dto to response_body
+    response_body = PostAdapter.read_post_output_dto_to_response_body(output_dto)
+    return jsonify(response_body)
 
 
 @app.route("/read_posts/", methods=["GET"])
 def read_posts():
-    # convert json to dto
-    input_dto = ReadPostsInputDto()
-
     # execute use_case
     use_case = ReadPosts(repository=repository)
-    output_dto: ReadPostsOutputDto = use_case.execute(input_dto=input_dto)
+    output_dtos: List[ReadPostOutputDto] = use_case.execute()
 
-    # convert dto to json
-    response_data = json.dumps(asdict(output_dto), default=_default_json_encoder)
-
-    return jsonify(response_data)
+    # convert output_dtos to response_body
+    response_body = PostAdapter.read_post_output_dtos_to_response_body(output_dtos)
+    return jsonify(response_body)
 
 
 @app.route("/write_post/", methods=["POST"])
 def write_post():
-    # convert json to dto
-    data = request.json
-    input_dto = WritePostInputDto(**data)
+    # convert request_body to input_dto
+    input_dto: WritePostInputDto = PostAdapter.request_body_to_write_post_input_dto(request.json)
 
     # execute use_case
     use_case = WritePost(repository=repository)
-    output_dto = use_case.execute(input_dto=input_dto)
+    output_dto: WritePostOutputDto = use_case.execute(input_dto=input_dto)
 
-    # convert dto to json
-    response_data = json.dumps(asdict(output_dto), default=_default_json_encoder)
+    # convert output_dto to response_body
+    response_body = PostAdapter.write_post_output_dto_to_response_body(output_dto)
 
-    return jsonify(response_data)
+    return jsonify(response_body)
 
 
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify(error=str(e)), 404
-
-
-def _default_json_encoder(obj: object):
-    if is_dataclass(obj):
-        return asdict(obj)
-    elif isinstance(obj, datetime.datetime):
-        return obj.timestamp()
-    else:
-        return repr(obj)
 
 
 if __name__ == "__main__":

@@ -18,11 +18,7 @@ class InMemoryPostRepository(PostRepository):
     def get_all(self) -> List[Post]:
         return self.posts
 
-    def save(self, post: Post) -> bool:
-        try:
-            if post.id is None:
-                post.id = len(self.posts)
-            self.posts.append(post)
-            return True
-        except Exception:
-            return False
+    def save(self, post: Post):
+        if post.id is None:
+            post.id = len(self.posts)
+        self.posts.append(post)
