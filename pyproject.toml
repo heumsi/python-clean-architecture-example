@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "rentomatic"
+version = "0.1.0"
+description = ""
+authors = ["heumsi <heumsi@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+flask = "^1.1.2"
+sqlalchemy = "^1.3.19"
+sqlalchemy_utils = "^0.36.8"
+pymongo = "^3.11.0"
+
+[tool.poetry.dev-dependencies]
+pip = "^20.2.2"
+"punch.py" = "^2.0.0"
+wheel = "^0.35.1"
+watchdog = "^0.10.3"
+flake8 = "^3.8.3"
+Sphinx = "^3.2.1"
+cryptography = "^3.0"
+PyYAML = "^5.3.1"
+pytest = "5.4"
+pytest-flask = "^1.0.0"
+psycopg2-binary = "^2.8.5"
+pytest-docker = "^0.8.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
