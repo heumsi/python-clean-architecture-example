@@ -3,10 +3,10 @@ import json
 from flask import Blueprint, Response, request
 
 from rentomatic.repository import mongorepo as mr
-from rentomatic.request_objects import room_list_request_object as req
-from rentomatic.response_objects import response_objects as res
+from rentomatic.domain.request_objects import room_list_request_object as req
+from rentomatic.domain.response_objects import response_objects as res
 from rentomatic.serializers import room_json_serializer as ser
-from rentomatic.use_cases import room_list_use_case as uc
+from rentomatic.domain.use_cases import room_list_use_case as uc
 
 blueprint = Blueprint("room", __name__)
 STATUS_CODES = {

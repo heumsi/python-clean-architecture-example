@@ -1,7 +1,7 @@
 import pytest
 
-from rentomatic.request_objects import room_list_request_object as req
-from rentomatic.response_objects import response_objects as res
+from rentomatic.domain.request_objects import room_list_request_object as req
+from rentomatic.domain.response_objects import response_objects as res
 
 # The first part contains just the imports and some pytest fixtures to make it easier to write the tests
 

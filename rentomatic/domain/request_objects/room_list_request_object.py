@@ -2,32 +2,32 @@ import collections
 
 
 class InvalidRequestObject:
-    def __init__(self):
+    def __init__(self) -> None:
         self.errors = []
 
-    def add_error(self, parameter, message):
+    def add_error(self, parameter: str, message: str) -> None:
         self.errors.append({"parameter": parameter, "message": message})
 
-    def has_errors(self):
+    def has_errors(self) -> bool:
         return len(self.errors) > 0
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return False
 
 
 class ValidRequestObject:
     @classmethod
-    def from_dict(cls, adict):
+    def from_dict(cls, adict: dict):
         raise NotImplementedError
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return True
 
 
 class RoomListRequestObject(ValidRequestObject):
     accepted_filters = ["code__eq", "price__eq", "price__lt", "price__gt"]
 
-    def __init__(self, filters=None):
+    def __init__(self, filters: dict = None) -> None:
         """
         There are no validation checks in the __init__ method,
         because this is considered to be an internal method that gets called
@@ -36,7 +36,7 @@ class RoomListRequestObject(ValidRequestObject):
         self.filters = filters
 
     @classmethod
-    def from_dict(cls, adict):
+    def from_dict(cls, adict: dict):
         invalid_req = InvalidRequestObject()
         if "filters" in adict:
             if not isinstance(adict["filters"], collections.Mapping):

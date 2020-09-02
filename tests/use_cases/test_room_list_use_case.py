@@ -3,10 +3,10 @@ from unittest import mock
 
 import pytest
 
-from rentomatic.domain import room as r
-from rentomatic.request_objects import room_list_request_object as req
-from rentomatic.response_objects import response_objects as res
-from rentomatic.use_cases import room_list_use_case as uc
+from rentomatic.domain.entities import room as r
+from rentomatic.domain.request_objects import room_list_request_object as req
+from rentomatic.domain.response_objects import response_objects as res
+from rentomatic.domain.use_cases import room_list_use_case as uc
 
 
 @pytest.fixture

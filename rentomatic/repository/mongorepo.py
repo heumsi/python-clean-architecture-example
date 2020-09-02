@@ -1,10 +1,13 @@
+from typing import List
+
 import pymongo
 
-from rentomatic.domain.room import Room
+from rentomatic.domain.entities.room import Room
+from rentomatic.domain.interfaces.repository import Repository
 
 
-class MongoRepo:
-    def __init__(self, connection_data):
+class MongoRepo(Repository):
+    def __init__(self, connection_data: dict) -> None:
         client = pymongo.MongoClient(
             host=connection_data["host"],
             username=connection_data["user"],
@@ -13,7 +16,7 @@ class MongoRepo:
         )
         self.db = client[connection_data["dbname"]]
 
-    def list(self, filters=None):
+    def list(self, filters: dict = None) -> List[Room]:
         collection = self.db.rooms
         if filters is None:
             result = collection.find()

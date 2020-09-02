@@ -1,5 +1,5 @@
 from rentomatic.repository import memrepo as mr
-from rentomatic.use_cases import room_list_use_case as uc
+from rentomatic.domain.use_cases import room_list_use_case as uc
 
 room1 = {
     "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",

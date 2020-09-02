@@ -1,6 +1,6 @@
 import pytest
 
-from rentomatic.domain import room as r
+from rentomatic.domain.entities import room as r
 from rentomatic.repository import memrepo
 
 

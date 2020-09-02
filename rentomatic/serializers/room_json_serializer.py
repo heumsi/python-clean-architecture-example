@@ -2,7 +2,7 @@ import json
 
 
 class RoomJsonEncoder(json.JSONEncoder):
-    def default(self, o):
+    def default(self, o: object):
         try:
             to_serialize = {
                 "code": str(o.code),

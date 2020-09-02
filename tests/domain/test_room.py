@@ -1,6 +1,6 @@
 import uuid
 
-from rentomatic.domain import room as r
+from rentomatic.domain.entities import room as r
 
 
 def test_room_model_init():

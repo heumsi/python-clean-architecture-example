@@ -1,8 +1,8 @@
 import json
 from unittest import mock
 
-from rentomatic.domain.room import Room
-from rentomatic.response_objects import response_objects as res
+from rentomatic.domain.entities.room import Room
+from rentomatic.domain.response_objects import response_objects as res
 
 room_dict = {
     "code": "3251a5bd-86be-428d-8ae9-6e51a8048c33",

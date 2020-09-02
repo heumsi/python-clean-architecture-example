@@ -1,7 +1,7 @@
 import json
 import uuid
 
-from rentomatic.domain import room as r
+from rentomatic.domain.entities import room as r
 from rentomatic.serializers import room_json_serializer as ser
 
 
